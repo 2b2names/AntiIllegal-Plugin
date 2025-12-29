@@ -8,22 +8,25 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class AntiIllegal extends JavaPlugin {
 
-    private static boolean enabled = true;
+    // Flag to track if AntiIllegal is active
+    private static boolean antiIllegalEnabled = true;
 
     @Override
     public void onEnable() {
+        // Register listener with reference to this plugin
         Bukkit.getPluginManager().registerEvents(
                 new InventoryListener(this), this
         );
         getLogger().info("AntiIllegal enabled");
     }
 
-    public static boolean isEnabled() {
-        return enabled;
+    // Accessor for listener / other classes
+    public static boolean isAntiIllegalEnabled() {
+        return antiIllegalEnabled;
     }
 
-    public static void setEnabled(boolean state) {
-        enabled = state;
+    public static void setAntiIllegalEnabled(boolean state) {
+        antiIllegalEnabled = state;
     }
 
     @Override
@@ -39,10 +42,10 @@ public class AntiIllegal extends JavaPlugin {
         }
 
         if (args[0].equalsIgnoreCase("enable")) {
-            enabled = true;
+            AntiIllegal.setAntiIllegalEnabled(true);
             sender.sendMessage("§aAntiIllegal enabled.");
         } else if (args[0].equalsIgnoreCase("disable")) {
-            enabled = false;
+            AntiIllegal.setAntiIllegalEnabled(false);
             sender.sendMessage("§cAntiIllegal disabled.");
         } else {
             sender.sendMessage("§7Usage: /antiillegal <enable|disable>");

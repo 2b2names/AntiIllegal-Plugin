@@ -20,15 +20,16 @@ public class InventoryListener implements Listener {
 
     @EventHandler
     public void onInventoryOpen(InventoryOpenEvent event) {
-        if (!AntiIllegal.isEnabled()) return;
+        // ✅ check if plugin is enabled
+        if (!AntiIllegal.isAntiIllegalEnabled()) return;
 
         if (!(event.getPlayer() instanceof Player player)) return;
-        if (player.isOp()) return;
+        if (player.isOp()) return; // OPs excluded
 
         Inventory inv = event.getInventory();
         boolean changed = false;
 
-        // Normal inventories
+        // 🔹 Normal inventory items
         for (int i = 0; i < inv.getSize(); i++) {
             ItemStack item = inv.getItem(i);
             if (item == null) continue;
@@ -40,7 +41,7 @@ public class InventoryListener implements Listener {
             }
         }
 
-        // Shulker contents only when opened
+        // 🔹 Shulker boxes (contents only)
         if (inv.getHolder() instanceof ShulkerBox shulker) {
             Inventory shulkerInv = shulker.getInventory();
 
@@ -55,7 +56,7 @@ public class InventoryListener implements Listener {
                 }
             }
 
-            shulker.update();
+            shulker.update(); // save changes
         }
 
         if (changed) {
