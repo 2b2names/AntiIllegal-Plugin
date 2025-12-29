@@ -1,5 +1,10 @@
 name: AntiIllegal
-version: 1.7
+version: 1.8
 main: me.tiger.antiIllegal.AntiIllegal
 api-version: 1.21
 author: 2b2t_names
+
+commands:
+  antiillegal:
+    description: Enable or disable AntiIllegal
+    usage: /antiillegal <enable|disable>

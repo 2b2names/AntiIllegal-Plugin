@@ -1,5 +1,6 @@
 package me.tiger.antiIllegal.listener;
 
+import me.tiger.antiIllegal.AntiIllegal;
 import me.tiger.antiIllegal.util.ItemNormalizer;
 import org.bukkit.block.ShulkerBox;
 import org.bukkit.entity.Player;
@@ -11,15 +12,23 @@ import org.bukkit.inventory.ItemStack;
 
 public class InventoryListener implements Listener {
 
+    private final AntiIllegal plugin;
+
+    public InventoryListener(AntiIllegal plugin) {
+        this.plugin = plugin;
+    }
+
     @EventHandler
     public void onInventoryOpen(InventoryOpenEvent event) {
+        if (!AntiIllegal.isEnabled()) return;
+
         if (!(event.getPlayer() instanceof Player player)) return;
-        if (player.isOp()) return; // OPs excluded
+        if (player.isOp()) return;
 
         Inventory inv = event.getInventory();
         boolean changed = false;
 
-        // 🔹 NORMAL inventories (player, chest, etc.)
+        // Normal inventories
         for (int i = 0; i < inv.getSize(); i++) {
             ItemStack item = inv.getItem(i);
             if (item == null) continue;
@@ -31,7 +40,7 @@ public class InventoryListener implements Listener {
             }
         }
 
-        // 🔹 SHULKER BOXES (contents only)
+        // Shulker contents only when opened
         if (inv.getHolder() instanceof ShulkerBox shulker) {
             Inventory shulkerInv = shulker.getInventory();
 
@@ -46,7 +55,7 @@ public class InventoryListener implements Listener {
                 }
             }
 
-            shulker.update(); // save changes
+            shulker.update();
         }
 
         if (changed) {
